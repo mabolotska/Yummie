@@ -45,8 +45,10 @@ class DishPortraitCollectionViewCell: UICollectionViewCell {
 
     let titleLbl: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+     //   label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.3
         return label
     }()
     let caloriesLbl: UILabel = {
@@ -58,6 +60,7 @@ class DishPortraitCollectionViewCell: UICollectionViewCell {
     let descriptionLbl: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.textColor = .gray
         return label
     }()
     
@@ -85,7 +88,9 @@ extension DishPortraitCollectionViewCell {
                }
         
         stackView.snp.makeConstraints { make in
-            make.edges.equalTo(cardView)
+            make.edges.equalTo(cardView).inset(UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
         }
+        
+     
     }
 }

@@ -6,17 +6,12 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class ListDishesViewController: UIViewController {
     
     var category: DishCategory!
-    var dishes: [Dish] = [
-        .init(name: "Popular Dish 1", description: "Description 1", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 200),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-    ]
+    var dishes: [Dish] = []
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -27,7 +22,22 @@ class ListDishesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+       
+      
+        ProgressHUD.colorProgress = .blue
+        NetworkService.shared.fetchCategoryDishes(categoryId: category.id ?? "") { [weak self] (result) in
+            switch result {
+            case .success(let dishes):
+                ProgressHUD.dismiss()
+                self?.dishes = dishes
+                self?.tableView.reloadData()
+            case .failure(let error):
+                ProgressHUD.error(error.localizedDescription)
+            }
+        }
     }
+    
+
     
 }
 
@@ -44,7 +54,15 @@ extension ListDishesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 300
+    }
+    
+    
+   
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = DishDetailViewController()
+        controller.dish = dishes[indexPath.row]
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 

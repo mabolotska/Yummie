@@ -48,8 +48,9 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     private let categoryTitleLbl: UILabel = {
         let label = UILabel()
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.3
+//        label.adjustsFontSizeToFitWidth = true
+//        label.minimumScaleFactor = 0.3
+        label.numberOfLines = 0
         return label
     }()
     
@@ -83,7 +84,7 @@ private extension CategoryCollectionViewCell {
             categoryTitleLbl.snp.makeConstraints { make in
                 make.centerY.equalTo(categoryImageView)
                 make.leading.equalTo(categoryImageView.snp.trailing).offset(3)
-                make.trailing.equalTo(oneView) // Adjust this line
+                make.trailing.equalTo(oneView).offset(-3)
             }
     }
 }

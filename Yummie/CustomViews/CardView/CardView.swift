@@ -24,7 +24,7 @@ class CardView: UIView {
 
               // Set border width and color
               layer.borderWidth = 1.0
-              layer.borderColor = UIColor.black.cgColor
+              layer.borderColor = UIColor.gray.cgColor
 
               // Set long shadow effect
               layer.shadowColor = UIColor.black.cgColor

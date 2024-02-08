@@ -10,6 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -17,11 +18,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         
-        let navigationController = UINavigationController(rootViewController: HomeViewController())
+        var navigationController = UINavigationController()
+       
+        if UserDefaults.standard.hasOnboarded {
+            navigationController = UINavigationController(rootViewController: HomeViewController())
+        } else {
+            navigationController = UINavigationController(rootViewController: OnboardingViewController())
+        }
+        
+    
         window.rootViewController = navigationController
-        
-   
-        
         self.window = window
         self.window?.makeKeyAndVisible()
     }
@@ -57,3 +63,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+
+//
+//if UserDefaults.standard.hasOnboarded {
+//    
+//    window.rootViewController = UINavigationController(rootViewController: HomeViewController())
+//} else {
+//    window.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+//}

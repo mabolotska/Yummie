@@ -6,14 +6,14 @@
 //
 
 import UIKit
-
+import ProgressHUD
 
 class DishDetailViewController: UIViewController {
     var dish: Dish!
     
     private let dishImageView: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleAspectFill
         return image
     }()
     private let cardView: UIView = {
@@ -26,7 +26,7 @@ class DishDetailViewController: UIViewController {
     private let oneStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 12
+        stack.spacing = 8
         return stack
     }()
     
@@ -38,7 +38,9 @@ class DishDetailViewController: UIViewController {
     }()
     let descriptionLbl: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.3
         return label
     }()
     let caloriesLbl: UILabel = {
@@ -60,6 +62,7 @@ class DishDetailViewController: UIViewController {
         button.backgroundColor = .darkGray
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
+        button.addTarget(self, action: #selector(placeOrderBtnClicked), for: .touchUpInside)
         return button
     }()
     
@@ -74,6 +77,25 @@ class DishDetailViewController: UIViewController {
         titleLbl.text = dish.name
         descriptionLbl.text = dish.description
         caloriesLbl.text = dish.formattedCalories
+    }
+    
+    @objc func placeOrderBtnClicked() {
+        guard let name = nameField.text?.trimmingCharacters(in: .whitespaces),
+              !name.isEmpty else {
+            ProgressHUD.error()
+            return
+        }
+        
+        ProgressHUD.animate("Placing order...")
+        NetworkService.shared.placeOrder(dishId: dish.id ?? "", name: name) { (result) in
+            switch result {
+            case .success(_):
+                ProgressHUD.succeed("Your order has been received. 👨🏼‍🍳")
+            case .failure(let error):
+                ProgressHUD.error(error.localizedDescription)
+            }
+        }
+        
     }
     
 }
@@ -101,12 +123,14 @@ extension DishDetailViewController {
         oneStack.addArrangedSubview(descriptionLbl)
         oneStack.addArrangedSubview(nameField)
         oneStack.addArrangedSubview(orderButton)
-        
+        oneStack.setCustomSpacing(10, after: descriptionLbl) // Add spacing after the description label
+
+        nameField.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
 
         dishImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(2.0/3.0)
+            make.height.lessThanOrEqualToSuperview().multipliedBy(2.0/3.0)
         }
         cardView.snp.makeConstraints { make in
             make.top.equalTo(dishImageView.snp.bottom).offset(3)
@@ -118,15 +142,12 @@ extension DishDetailViewController {
             make.top.leading.trailing.bottom.equalTo(cardView)
             
         }
-        
-//        titleLbl.snp.makeConstraints { make in
-//            make.leading.top.equalTo(oneStack).offset(5)
-//        }
-//        
-//        caloriesLbl.snp.makeConstraints { make in
-//            make.centerY.equalTo(titleLbl)
-//            make.trailing.equalTo(oneStack).offset(-10)
-//        }
+        nameField.snp.makeConstraints { make in
+            make.height.equalTo(30) // Adjust the height as needed
+        }
+        orderButton.snp.makeConstraints { make in
+            make.height.equalTo(30)
+        }
         
     }
 }

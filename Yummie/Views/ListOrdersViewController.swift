@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class ListOrdersViewController: UIViewController {
     
@@ -13,7 +14,6 @@ class ListOrdersViewController: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView()
-        
         return table
     }()
     
@@ -23,10 +23,22 @@ class ListOrdersViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
        
-        
+        ProgressHUD.succeed()
     }
     
-  
+    override func viewDidAppear(_ animated: Bool) {
+        NetworkService.shared.fetchOrders { [weak self] (result) in
+            switch result {
+            case .success(let orders):
+                ProgressHUD.dismiss()
+                
+                self?.orders = orders
+                self?.tableView.reloadData()
+            case .failure(let error):
+                ProgressHUD.error(error.localizedDescription)
+            }
+        }
+    }
     
 }
 
@@ -45,6 +57,10 @@ extension ListOrdersViewController: UITableViewDelegate, UITableViewDataSource {
         let controller = DishDetailViewController()
         controller.dish = orders[indexPath.row].dish
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
 }

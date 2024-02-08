@@ -6,5 +6,7 @@ target 'Yummie' do
   use_frameworks!
 
   # Pods for Yummie
+pod 'ProgressHUD'
+pod "IQKeyboardManagerSwift"
   pod "Kingfisher"
 end

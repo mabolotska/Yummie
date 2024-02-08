@@ -6,33 +6,12 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class HomeViewController: UIViewController  {
-    var categories: [DishCategory] = [.init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      .init(id: "fdhdhdf", name: "fhdfh", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg"),
-                                      
-                                    ]
-    
-    var populars: [Dish] = [
-        .init(name: "Popular Dish 1", description: "Description 1", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 200),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-    ]
-    var specials: [Dish] = [
-        .init(name: "Popular Dish 1", description: "Description 1", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 200),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-        .init(name: "Popular Dish 2", description: "Description 2", image: "https://previews.123rf.com/images/jeremywhat/jeremywhat1106/jeremywhat110600966/9895276-round-half-tone-images-round-black-white-pattern-design.jpg", calories: 250),
-    ]
+    var categories: [DishCategory] = []
+    var populars: [Dish] = []
+    var specials: [Dish] = []
     
     private let myScrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -44,7 +23,7 @@ class HomeViewController: UIViewController  {
         stack.axis = .vertical
         stack.alignment = .fill
         stack.distribution = .fill
-        stack.backgroundColor = .gray
+        
         stack.spacing = 2
         return stack
     }()
@@ -117,12 +96,30 @@ class HomeViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ProgressHUD.colorProgress = .blue
         
         inizialize()
-        
+        NetworkService.shared.fetchAllCategories { [weak self] (result) in
+            switch result {
+            case .success(let allDishes):
+                ProgressHUD.dismiss()
+                self?.categories = allDishes.categories ?? []
+                self?.populars = allDishes.populars ?? []
+                self?.specials = allDishes.specials ?? []
+                
+                self?.foodCollectionView.reloadData()
+                self?.foodCollectionViewPop.reloadData()
+                self?.foodCollectionViewChief.reloadData()
+            case .failure(let error):
+                ProgressHUD.error(error.localizedDescription)
+            }
+        }
        
     }
-    
+    @objc func rightBarButtonItemPressed() {
+        let vc = ListOrdersViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
 }
 
@@ -143,7 +140,7 @@ extension HomeViewController {
         foodCollectionViewChief.isUserInteractionEnabled = true
         myScrollView.contentSize = CGSize(width: view.frame.size.width + foodView.frame.size.width, height: view.frame.size.height)
         title = "Yummie"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart.fill"), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart.fill"), style: .plain, target: self, action: #selector(rightBarButtonItemPressed))
         navigationItem.rightBarButtonItem?.tintColor = .systemPink
         view.addSubview(myScrollView)
         
@@ -279,11 +276,11 @@ extension HomeViewController: UIScrollViewDelegate, UICollectionViewDataSource, 
             return CGSize(width: itemWidth, height: 73)
         } 
         else if collectionView == foodCollectionViewPop {
-            return CGSize(width: 123, height: 193)
+            return CGSize(width: 123, height: 223)
         }
         
         else if collectionView == foodCollectionViewChief {
-            return CGSize(width: 323, height: 73)
+            return CGSize(width: 223, height: 73)
         }
         
         return CGSize(width: 123, height: 73)

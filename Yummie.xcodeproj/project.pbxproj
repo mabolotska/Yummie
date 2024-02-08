@@ -35,6 +35,13 @@
 		D0B8C06A2B72420200A77892 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C0692B72420200A77892 /* Order.swift */; };
 		D0B8C06D2B72465D00A77892 /* DishListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C06C2B72465D00A77892 /* DishListTableViewCell.swift */; };
 		D0B8C06F2B724EC600A77892 /* ListDishesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C06E2B724EC600A77892 /* ListDishesViewController.swift */; };
+		D0B8C0722B72636400A77892 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C0712B72636400A77892 /* NetworkService.swift */; };
+		D0B8C0742B72D4D400A77892 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C0732B72D4D400A77892 /* Route.swift */; };
+		D0B8C0762B72D4FA00A77892 /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C0752B72D4FA00A77892 /* Method.swift */; };
+		D0B8C0782B73659000A77892 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C0772B73659000A77892 /* AppError.swift */; };
+		D0B8C07A2B7365C500A77892 /* ApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C0792B7365C500A77892 /* ApiResponse.swift */; };
+		D0B8C07C2B73701F00A77892 /* AllDishes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C07B2B73701F00A77892 /* AllDishes.swift */; };
+		D0B8C07E2B74D55200A77892 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B8C07D2B74D55200A77892 /* UserDefaults.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +73,13 @@
 		D0B8C0692B72420200A77892 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		D0B8C06C2B72465D00A77892 /* DishListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DishListTableViewCell.swift; sourceTree = "<group>"; };
 		D0B8C06E2B724EC600A77892 /* ListDishesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDishesViewController.swift; sourceTree = "<group>"; };
+		D0B8C0712B72636400A77892 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		D0B8C0732B72D4D400A77892 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		D0B8C0752B72D4FA00A77892 /* Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
+		D0B8C0772B73659000A77892 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		D0B8C0792B7365C500A77892 /* ApiResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponse.swift; sourceTree = "<group>"; };
+		D0B8C07B2B73701F00A77892 /* AllDishes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDishes.swift; sourceTree = "<group>"; };
+		D0B8C07D2B74D55200A77892 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +128,7 @@
 		D0003C5C2B6E38F6004D7CAF /* Yummie */ = {
 			isa = PBXGroup;
 			children = (
+				D0B8C0702B72633C00A77892 /* Networking */,
 				D0003C752B6E479A004D7CAF /* Extensions */,
 				D0003C712B6E45B0004D7CAF /* CustomViews */,
 				D0003C722B6E45BB004D7CAF /* Views */,
@@ -167,6 +182,7 @@
 				D0B8C0512B6FE41800A77892 /* DishCategory.swift */,
 				D0B8C05F2B70C9CB00A77892 /* Dish.swift */,
 				D0B8C0692B72420200A77892 /* Order.swift */,
+				D0B8C07B2B73701F00A77892 /* AllDishes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -176,6 +192,7 @@
 			children = (
 				D0B8C0582B6FE67600A77892 /* String+Extension.swift */,
 				D0B8C0652B72220F00A77892 /* UIViewController+Extension.swift */,
+				D0B8C07D2B74D55200A77892 /* UserDefaults.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -204,6 +221,18 @@
 				D0B8C06C2B72465D00A77892 /* DishListTableViewCell.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		D0B8C0702B72633C00A77892 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				D0B8C0712B72636400A77892 /* NetworkService.swift */,
+				D0B8C0732B72D4D400A77892 /* Route.swift */,
+				D0B8C0752B72D4FA00A77892 /* Method.swift */,
+				D0B8C0772B73659000A77892 /* AppError.swift */,
+				D0B8C0792B7365C500A77892 /* ApiResponse.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		FB90C1F21802BEC98314AB96 /* Frameworks */ = {
@@ -346,16 +375,23 @@
 				D0003C772B6E4857004D7CAF /* OnboardingSlide.swift in Sources */,
 				D0003C622B6E38F6004D7CAF /* OnboardingViewController.swift in Sources */,
 				D0B8C04C2B6F7E7C00A77892 /* Test.swift in Sources */,
+				D0B8C07C2B73701F00A77892 /* AllDishes.swift in Sources */,
 				D0003C5E2B6E38F6004D7CAF /* AppDelegate.swift in Sources */,
+				D0B8C0762B72D4FA00A77892 /* Method.swift in Sources */,
 				D0B8C06F2B724EC600A77892 /* ListDishesViewController.swift in Sources */,
 				D0B8C0642B71907400A77892 /* DishDetailViewController.swift in Sources */,
 				D0003C602B6E38F6004D7CAF /* SceneDelegate.swift in Sources */,
 				D0B8C0522B6FE41800A77892 /* DishCategory.swift in Sources */,
+				D0B8C07A2B7365C500A77892 /* ApiResponse.swift in Sources */,
 				D0B8C0622B70F57200A77892 /* DishLandscapeCollectionViewCell.swift in Sources */,
+				D0B8C0742B72D4D400A77892 /* Route.swift in Sources */,
+				D0B8C0722B72636400A77892 /* NetworkService.swift in Sources */,
 				D0B8C06A2B72420200A77892 /* Order.swift in Sources */,
 				D0B8C06D2B72465D00A77892 /* DishListTableViewCell.swift in Sources */,
 				D0B8C0592B6FE67600A77892 /* String+Extension.swift in Sources */,
 				D0B8C05C2B700E7E00A77892 /* CardView.swift in Sources */,
+				D0B8C0782B73659000A77892 /* AppError.swift in Sources */,
+				D0B8C07E2B74D55200A77892 /* UserDefaults.swift in Sources */,
 				D0B8C04A2B6EE4B200A77892 /* OnboardingCollectionViewCell.swift in Sources */,
 				D0B8C0602B70C9CB00A77892 /* Dish.swift in Sources */,
 				D0B8C05E2B70C95400A77892 /* DishPortraitCollectionViewCell.swift in Sources */,
